@@ -1,1 +1,1 @@
-worker: go run cmbot.go
+worker: cmbot
