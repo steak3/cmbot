@@ -1,0 +1,37 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "uviChbqqhvoeErm0M5sgPHVo8kA=",
+			"path": "github.com/bwmarrin/discordgo",
+			"revision": "5835676872d7fa65ee37b32672079c4ede2c1855",
+			"revisionTime": "2016-12-10T14:47:14Z"
+		},
+		{
+			"checksumSHA1": "/NvcG7yFYHTrfn/zSSzWVCBBjO0=",
+			"path": "github.com/gorilla/websocket",
+			"revision": "0868951cdb8e69bc42df4598bdc6164ff2f1a072",
+			"revisionTime": "2016-12-08T00:21:58Z"
+		},
+		{
+			"checksumSHA1": "Y/FcWB2/xSfX1rRp7HYhktHNw8s=",
+			"path": "golang.org/x/crypto/nacl/secretbox",
+			"revision": "9b1a210a06ea1176ec1f0a1ddf83ad7463b8ea3e",
+			"revisionTime": "2016-12-16T13:31:18Z"
+		},
+		{
+			"checksumSHA1": "x7EiaCEsuaZ3jc8r+8KBmYwESmA=",
+			"path": "golang.org/x/crypto/poly1305",
+			"revision": "9b1a210a06ea1176ec1f0a1ddf83ad7463b8ea3e",
+			"revisionTime": "2016-12-16T13:31:18Z"
+		},
+		{
+			"checksumSHA1": "w8PESKJweP+BCAxCYPU1QC08qUU=",
+			"path": "golang.org/x/crypto/salsa20/salsa",
+			"revision": "9b1a210a06ea1176ec1f0a1ddf83ad7463b8ea3e",
+			"revisionTime": "2016-12-16T13:31:18Z"
+		}
+	],
+	"rootPath": "github.com/steak3/cmbot"
+}
