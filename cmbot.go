@@ -4,23 +4,32 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+
+	"strings"
 )
 
 var (
-	BotID string
+	BotID          string
+	isGreetEnabled bool
+	greetMessage   string
+	session        discordgo.Session
 )
 
 func main() {
 
+	//TODO: read conf file (token asap)
+	isGreetEnabled = true
+	greetMessage = "Welcome %user%!"
+
 	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New("Bot MjU4Njg2NDQ1MjQ0NTE0MzA3.CzM4GA.1rCrrmAsFw2xqfNJTzqPPEBv--c")
+	session, err := discordgo.New("Bot MjU4Njg2NDQ1MjQ0NTE0MzA3.CzM4GA.1rCrrmAsFw2xqfNJTzqPPEBv--c")
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
 	}
 
 	// Get the account information.
-	u, err := dg.User("@me")
+	u, err := session.User("@me")
 	if err != nil {
 		fmt.Println("error obtaining account details,", err)
 	}
@@ -28,11 +37,12 @@ func main() {
 	// Store the account ID for later use.
 	BotID = u.ID
 
-	// Register messageCreate as a callback for the messageCreate events.
-	dg.AddHandler(messageCreate)
+	// Register callbacks for the events.
+	session.AddHandler(messageCreate)
+	session.AddHandler(guildMemberAdd)
 
 	// Open the websocket and begin listening.
-	err = dg.Open()
+	err = session.Open()
 	if err != nil {
 		fmt.Println("error opening connection,", err)
 		return
@@ -44,9 +54,31 @@ func main() {
 	return
 }
 
+// When someone joins the discord server
+func guildMemberAdd(s *discordgo.Session, m *discordgo.GuildMemberAdd) {
+	if isGreetEnabled {
+		format := strings.Replace(greetMessage, "%user%", "<@"+m.Member.User.ID+">", -1)
+		_, _ = s.ChannelMessageSend(m.GuildID, format)
+	}
+}
+
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the autenticated bot has access to.
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+
+	var confirmMessage string
+	split := strings.SplitN(m.Content, " ", 2)
+	//fmt.Println(split)
+
+	switch split[0] {
+	case ".repeat":
+		repeat(split)
+	case ".greet":
+		confirmMessage = greet(split)
+	}
+
+	// Send nothing is confirmMessage is null
+	_, _ = s.ChannelMessageSend(m.ChannelID, confirmMessage)
 
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == BotID {
@@ -61,5 +93,28 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// If the message is "pong" reply with "Ping!"
 	if m.Content == "pong" {
 		_, _ = s.ChannelMessageSend(m.ChannelID, "Ping!")
+	}
+}
+
+func repeat(cmd []string) {
+	if len(cmd) > 1 {
+		fmt.Print("yeah repeat! -> ")
+		fmt.Println(cmd)
+	}
+}
+
+func greet(cmd []string) string {
+	//.greet my_welcom_message
+	if len(cmd) > 1 {
+		greetMessage = cmd[1]
+		return "New greet message set!"
+		// .greet
+	} else {
+		isGreetEnabled = !isGreetEnabled
+		if isGreetEnabled {
+			return "Welcome message enabled"
+		} else {
+			return "Welcome message disabled"
+		}
 	}
 }
