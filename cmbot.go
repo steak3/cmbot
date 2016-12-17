@@ -6,6 +6,8 @@ import (
 	"github.com/bwmarrin/discordgo"
 
 	"strings"
+
+	"os"
 )
 
 var (
@@ -21,8 +23,8 @@ func main() {
 	isGreetEnabled = true
 	greetMessage = "Welcome %user%!"
 
-	// Create a new Discord session using the provided bot token.
-	session, err := discordgo.New("Bot MjU4Njg2NDQ1MjQ0NTE0MzA3.CzM4GA.1rCrrmAsFw2xqfNJTzqPPEBv--c")
+	// Create a new Discord session using the provided bot token from env vars.
+	session, err := discordgo.New("Bot " + os.Getenv("CMBOT_TOKEN"))
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
