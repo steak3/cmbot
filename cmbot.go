@@ -23,6 +23,7 @@ type Data struct {
 	Repeats        []string `json:"repeats"`
 }
 
+//TODO: repeats - docker - organize code
 func main() {
 
 	file, e := ioutil.ReadFile("./config.json")
@@ -30,7 +31,6 @@ func main() {
 		fmt.Printf("File error: %v\n", e)
 		os.Exit(1)
 	}
-	fmt.Printf("%s\n", string(file))
 
 	var data Data
 	json.Unmarshal(file, &data)
