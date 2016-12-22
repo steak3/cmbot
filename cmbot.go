@@ -7,10 +7,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 
 	"strings"
-
-	"net/http"
-
-	"encoding/json"
 )
 
 var (
@@ -22,20 +18,9 @@ var (
 
 func main() {
 
-	type Config struct {
-		isGreetEnabled string
-	}
-
 	//TODO: read conf file (token asap)
 	isGreetEnabled = true
 	greetMessage = "Welcome %user%!"
-	resp, _ := http.Get(os.Getenv("CMBOT_CONF_FILE"))
-
-	defer resp.Body.Close()
-	var config Config
-	json.NewDecoder(resp.Body).Decode(&config)
-
-	fmt.Println(config)
 
 	// Create a new Discord session using the provided bot token from env vars.
 	session, err := discordgo.New("Bot " + os.Getenv("CMBOT_TOKEN"))
