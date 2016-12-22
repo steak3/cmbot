@@ -1,12 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
-
-	"strings"
 )
 
 var (
@@ -16,11 +17,25 @@ var (
 	session        discordgo.Session
 )
 
+type Data struct {
+	IsGreetEnabled bool     `json:"isGreetEnabled"`
+	GreetMessage   string   `json:"greetMessage"`
+	Repeats        []string `json:"repeats"`
+}
+
 func main() {
 
-	//TODO: read conf file (token asap)
-	isGreetEnabled = true
-	greetMessage = "Welcome %user%!"
+	file, e := ioutil.ReadFile("./config.json")
+	if e != nil {
+		fmt.Printf("File error: %v\n", e)
+		os.Exit(1)
+	}
+	fmt.Printf("%s\n", string(file))
+
+	var data Data
+	json.Unmarshal(file, &data)
+	isGreetEnabled = data.IsGreetEnabled
+	greetMessage = data.GreetMessage
 
 	// Create a new Discord session using the provided bot token from env vars.
 	session, err := discordgo.New("Bot " + os.Getenv("CMBOT_TOKEN"))
