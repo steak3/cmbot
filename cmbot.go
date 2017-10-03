@@ -24,7 +24,7 @@ type Data struct {
 }
 
 //TODO: repeats - docker - organize code
-// ok 2
+// ok 2 3
 func main() {
 
 	file, e := ioutil.ReadFile("./config.json")
