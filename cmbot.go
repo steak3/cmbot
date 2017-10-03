@@ -37,7 +37,7 @@ func main() {
 	isGreetEnabled = data.IsGreetEnabled
 	greetMessage = data.GreetMessage
 
-	// Create a new Discord session using the provided bot token from env vars.
+	// Create a new Discord session using the provided bot token from env vars. Test
 	session, err := discordgo.New("Bot " + os.Getenv("CMBOT_TOKEN"))
 
 	if err != nil {
